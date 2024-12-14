@@ -12,7 +12,7 @@ const UpdateJob = () => {
   const { id } = useParams();
   const [startDate, setStartDate] = useState(new Date());
   const [job, setJob] = useState({});
- 
+
   useEffect(() => {
     fetchJobData();
   }, [id]);
@@ -56,7 +56,7 @@ const UpdateJob = () => {
         formData
       );
 
-      form.reset();
+      e.target.reset()
       toast.success('Data Updated Successfully!!!');
       navigate('/my-posted-jobs');
     } catch (err) {

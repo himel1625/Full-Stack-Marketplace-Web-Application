@@ -62,7 +62,6 @@ async function run() {
       const result = await jobsCollection.findOne(query);
       res.send(result);
     });
-
     // save a jobData in db
     app.put('/update-job/:id', async (req, res) => {
       const id = req.params.id;

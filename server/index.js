@@ -20,19 +20,31 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
+    const jobsCollection = client.db('solo-db').collection('jobs');
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 });
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!'
     );
 
+    // save a jobData in db
+    app.post('/add-job', async (req, res) => {
+      const jobData = req.body;
+      const result = await jobsCollection.insertOne(jobData);
+      res.send(result);
+    });
 
+    // get all jobs data from db
+    app.get('/jobs', async (req, res) => {
+      const result = await jobsCollection.find().toArray();
+      res.send(result);
+    });
 
-    
   } finally {
     // Ensures that the client will close when you finish/error
   }
 }
+
 run().catch(console.dir);
 app.get('/', (req, res) => {
   res.send('Hello from SoloSphere Server....');

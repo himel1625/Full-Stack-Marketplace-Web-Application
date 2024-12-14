@@ -20,53 +20,52 @@ const MyPostedJobs = () => {
     setJobs(data);
   };
 
-const handleDelete = async _id => {
-  const swalWithBootstrapButtons = Swal.mixin({
-    customClass: {
-      confirmButton: 'btn btn-success',
-      cancelButton: 'btn btn-danger',
-    },
-    buttonsStyling: false,
-  });
+  const handleDelete = async _id => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger',
+      },
+      buttonsStyling: false,
+    });
 
-  swalWithBootstrapButtons
-    .fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, cancel!',
-      reverseButtons: true,
-    })
-    .then(async result => {
-      if (result.isConfirmed) {
-        try {
-          await axios.delete(`${import.meta.env.VITE_API_URL}/job/${_id}`);
-          await fetchAllJobs(); // Ensure fetch happens only after deletion
+    swalWithBootstrapButtons
+      .fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true,
+      })
+      .then(async result => {
+        if (result.isConfirmed) {
+          try {
+            await axios.delete(`${import.meta.env.VITE_API_URL}/job/${_id}`);
+            await fetchAllJobs();
+            swalWithBootstrapButtons.fire({
+              title: 'Deleted!',
+              text: 'Your job has been deleted.',
+              icon: 'success',
+            });
+          } catch (error) {
+            console.error('Error deleting job:', error);
+            Swal.fire({
+              title: 'Error!',
+              text: 'Failed to delete the job. Please try again later.',
+              icon: 'error',
+            });
+          }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
           swalWithBootstrapButtons.fire({
-            title: 'Deleted!',
-            text: 'Your job has been deleted.',
-            icon: 'success',
-          });
-        } catch (error) {
-          console.error('Error deleting job:', error);
-          Swal.fire({
-            title: 'Error!',
-            text: 'Failed to delete the job. Please try again later.',
+            title: 'Cancelled',
+            text: 'Your job is safe :)',
             icon: 'error',
           });
         }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        swalWithBootstrapButtons.fire({
-          title: 'Cancelled',
-          text: 'Your job is safe :)',
-          icon: 'error',
-        });
-      }
-    });
-};
-
+      });
+  };
 
   return (
     <section className="container px-4 mx-auto pt-12">
@@ -188,7 +187,7 @@ const handleDelete = async _id => {
                           </button>
 
                           <Link
-                            to={`/update/1`}
+                            to={`/update/${job._id}`}
                             className="text-gray-500 transition-colors duration-200   hover:text-yellow-500 focus:outline-none"
                           >
                             <svg

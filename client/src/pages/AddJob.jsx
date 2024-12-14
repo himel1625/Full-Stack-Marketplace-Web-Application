@@ -33,7 +33,7 @@ const AddJob = () => {
       max_price,
       description,
       bid_count: 0,
-    };
+    }; 
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/add-job`, formData);
       e.target.reset();

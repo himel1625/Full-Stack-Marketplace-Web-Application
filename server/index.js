@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
@@ -26,20 +26,35 @@ async function run() {
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!'
     );
-
     // save a jobData in db
     app.post('/add-job', async (req, res) => {
       const jobData = req.body;
       const result = await jobsCollection.insertOne(jobData);
       res.send(result);
     });
-
     // get all jobs data from db
     app.get('/jobs', async (req, res) => {
       const result = await jobsCollection.find().toArray();
       res.send(result);
     });
 
+    // get all job posted by a specific user
+    app.get('/jobs/:email', async (req, res) => {
+      const email = req.params.email;
+      console.log(email);
+      const query = { 'buyer.email': email };
+      const result = await jobsCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    // get a single job data by id from db
+    app.delete('/job/:id', async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const result = await jobsCollection.deleteOne(query);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
   }

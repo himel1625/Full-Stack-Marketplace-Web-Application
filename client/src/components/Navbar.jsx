@@ -63,6 +63,18 @@ const Navbar = () => {
             </li>
             <li>
               <NavLink
+                to="/MyProfile"
+                className={({ isActive }) =>
+                  `font-bold ${
+                    isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                  }`
+                }
+              >
+                My Profile
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
                 to="/jobs"
                 className={({ isActive }) =>
                   `font-bold ${
@@ -168,6 +180,18 @@ const Navbar = () => {
                     }
                   >
                     Home
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/MyProfile"
+                    className={({ isActive }) =>
+                      `font-bold ${
+                        isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                      }`
+                    }
+                  >
+                    My Profile
                   </NavLink>
                 </li>
                 <li>

@@ -158,7 +158,7 @@ const Navbar = () => {
           )}
 
           {/* Theme Toggle Button */}
-          <button onClick={toggleTheme} className="ml-4 btn btn-outline btn-sm">
+          <button onClick={toggleTheme} className=" dark:text-white ml-4 btn btn-outline btn-sm">
             {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
           </button>
         </div>

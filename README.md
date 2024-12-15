@@ -79,5 +79,7 @@ The app uses modern technologies like React for the frontend, Node.js for the ba
 - **Environment Variables**: Securely manage sensitive data such as Firebase credentials and MongoDB connection strings using `.env` files.
 - **Git**: Version control system to manage changes in the codebase and collaborate with other developers.
 
+## Live Demo
 
+Check out the live demo of the project here: [Live Demo](#) _(coming soon)_
 

@@ -50,7 +50,7 @@ const AddJob = () => {
 
   return (
     <div className="flex justify-center items-center min-h-[calc(100vh-306px)] my-12 ">
-      <section className="p-2 md:p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800">
+      <section className="p-16 md:p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 ">
         <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 capitalize">
           Post a Job
         </h2>

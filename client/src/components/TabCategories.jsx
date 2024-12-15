@@ -20,10 +20,10 @@ const TabCategories = () => {
   return (
     <Tabs>
       {/* Container */}
-      <div className="container px-6 py-10 mx-auto dark:bg-gray-900 dark:text-white">
+      <div className="container px-6 py-10 mx-auto  dark:text-white">
         {/* Navbar */}
         <nav className="flex justify-between items-center py-4">
-          <h2 className="text-xl font-bold dark:text-white">Job Categories</h2>
+          <h2 className="text-xl font-bold dark:text-white ">Job Categories</h2>
           <ul className="flex space-x-4">
             <li>
               <a
@@ -35,7 +35,7 @@ const TabCategories = () => {
             </li>
             <li>
               <a
-                href="/about"
+                // href="/about"
                 className="hover:text-gray-500 dark:hover:text-gray-300"
               >
                 About
@@ -43,7 +43,7 @@ const TabCategories = () => {
             </li>
             <li>
               <a
-                href="/contact"
+                // href="/contact"
                 className="hover:text-gray-500 dark:hover:text-gray-300"
               >
                 Contact

@@ -24,8 +24,8 @@ const Navbar = () => {
   };
 
   return (
-    <div>
-      <div className="navbar bg-base-100 dark:bg-gray-700 shadow-sm container px-4 mx-auto">
+    <div className="sticky top-0 z-10">
+      <div className="navbar bg-base-100 dark:bg-gray-800 shadow-sm px-8 mx-auto ">
         <div className="flex-1">
           <NavLink to="/" className="flex gap-2 items-center">
             <img className="w-auto h-8  dark:bg-white" src={logo} alt="Logo" />
@@ -34,9 +34,21 @@ const Navbar = () => {
             </span>
           </NavLink>
         </div>
+        {!user && (
+          <NavLink
+            to="/login"
+            className={({ isActive }) =>
+              `font-bold text-white lg:hidden ${
+                isActive ? 'text-blue-300' : 'hover:text-blue-600'
+              }`
+            }
+          >
+            Login
+          </NavLink>
+        )}
 
         <div className="flex-none">
-          <ul className="menu menu-horizontal px-1 font-bold dark:text-white">
+          <ul className="gap-6 px-1 font-bold dark:text-white hidden  md:flex">
             <li>
               <NavLink
                 to="/"
@@ -59,6 +71,55 @@ const Navbar = () => {
                 }
               >
                 All Jobs
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink
+                to="/add-job"
+                className={({ isActive }) =>
+                  `font-bold ${
+                    isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                  }`
+                }
+              >
+                Add Job
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/my-posted-jobs"
+                className={({ isActive }) =>
+                  `font-bold ${
+                    isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                  }`
+                }
+              >
+                My Posted Jobs
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/my-bids"
+                className={({ isActive }) =>
+                  `font-bold ${
+                    isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                  }`
+                }
+              >
+                My Bids
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/bid-requests"
+                className={({ isActive }) =>
+                  `font-bold ${
+                    isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                  }`
+                }
+              >
+                Bid Requests
               </NavLink>
             </li>
 
@@ -95,8 +156,32 @@ const Navbar = () => {
               </div>
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 dark:bg-gray-800 dark:text-white rounded-box w-52 font-bold"
+                className="dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 dark:bg-gray-800 dark:text-white rounded-box w-52 font-bold"
               >
+                <li>
+                  <NavLink
+                    to="/"
+                    className={({ isActive }) =>
+                      `font-bold ${
+                        isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                      }`
+                    }
+                  >
+                    Home
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/jobs"
+                    className={({ isActive }) =>
+                      `font-bold ${
+                        isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                      }`
+                    }
+                  >
+                    All Jobs
+                  </NavLink>
+                </li>
                 <li>
                   <NavLink
                     to="/add-job"
@@ -145,6 +230,14 @@ const Navbar = () => {
                     Bid Requests
                   </NavLink>
                 </li>
+                <li>
+                  <button
+                    onClick={toggleTheme}
+                    className=" mt-2 dark:text-white ml-4 btn btn-outline btn-sm md:hidden block"
+                  >
+                    {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+                  </button>
+                </li>
                 <li className="mt-2">
                   <button
                     onClick={logOut}
@@ -160,7 +253,7 @@ const Navbar = () => {
           {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
-            className=" dark:text-white ml-4 btn btn-outline btn-sm"
+            className=" dark:text-white ml-4 btn btn-outline btn-sm hidden md:block"
           >
             {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
           </button>

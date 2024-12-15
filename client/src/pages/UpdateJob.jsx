@@ -66,7 +66,7 @@ const UpdateJob = () => {
   };
   return (
     <div className="flex justify-center items-center min-h-[calc(100vh-306px)] my-12 ">
-      <section className="p-2 md:p-6 mx-auto bg-white dark:bg-gray-800 rounded-md shadow-md">
+      <section className="p-12 md:p-6 mx-auto bg-white dark:bg-gray-800 rounded-md shadow-md">
         <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-100 capitalize">
           Update a Job
         </h2>

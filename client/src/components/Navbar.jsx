@@ -28,13 +28,9 @@ const Navbar = () => {
       <div className="navbar bg-base-100 dark:bg-gray-700 shadow-sm container px-4 mx-auto">
         <div className="flex-1">
           <NavLink to="/" className="flex gap-2 items-center">
-            <img
-              className="w-auto h-8  dark:bg-white"
-              src={logo}
-              alt="Logo"
-            />
+            <img className="w-auto h-8  dark:bg-white" src={logo} alt="Logo" />
             <span className="font-extrabold text-xl dark:text-white">
-              SoloSphere
+              JobBidder
             </span>
           </NavLink>
         </div>

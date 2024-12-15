@@ -23,7 +23,7 @@ const Footer = () => {
           <div>
             <img src={logo} alt="SoloSphere Logo" className="h-10 mb-4" />
             <p className="text-sm leading-relaxed">
-              SoloSphere is your go-to platform for collaborative projects and
+              JobBidder is your go-to platform for collaborative projects and
               networking. Our mission is to connect individuals and teams for
               seamless collaboration and success. Whether you're looking to
               build your team or join an exciting project, SoloSphere bridges
@@ -93,7 +93,7 @@ const Footer = () => {
                   href="mailto:support@solosphere.com"
                   className="hover:text-purple-600 dark:hover:text-purple-400"
                 >
-                  support@solosphere.com
+                  support@JobBidder.com
                 </a>
               </li>
               <li>
@@ -150,7 +150,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="flex flex-col items-center justify-between space-y-4 lg:flex-row">
           <p className="text-sm text-center lg:text-left">
-            &copy; {new Date().getFullYear()} SoloSphere. All rights reserved.
+            &copy; {new Date().getFullYear()} JobBidder. All rights reserved.
             Empowering connections, one project at a time.
           </p>
           <div className="flex space-x-4">

@@ -70,9 +70,11 @@ const MyPostedJobs = () => {
   return (
     <section className="container px-4 mx-auto pt-12">
       <div className="flex items-center gap-x-3">
-        <h2 className="text-lg font-medium text-gray-800 ">My Posted Jobs</h2>
+        <h2 className="text-lg font-medium text-gray-800 dark:text-gray-200">
+          My Posted Jobs
+        </h2>
 
-        <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full ">
+        <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-blue-800 dark:text-blue-300">
           {jobs.length} Job
         </span>
       </div>
@@ -80,13 +82,13 @@ const MyPostedJobs = () => {
       <div className="flex flex-col mt-6">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-            <div className="overflow-hidden border border-gray-200  md:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+            <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead className="bg-gray-50 dark:bg-gray-800">
                   <tr>
                     <th
                       scope="col"
-                      className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500"
+                      className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-300"
                     >
                       <div className="flex items-center gap-x-3">
                         <span>Title</span>
@@ -95,14 +97,14 @@ const MyPostedJobs = () => {
 
                     <th
                       scope="col"
-                      className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
+                      className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-300"
                     >
                       <span>Deadline</span>
                     </th>
 
                     <th
                       scope="col"
-                      className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
+                      className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-300"
                     >
                       <button className="flex items-center gap-x-2">
                         <span>Price Range</span>
@@ -111,64 +113,62 @@ const MyPostedJobs = () => {
 
                     <th
                       scope="col"
-                      className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
+                      className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-300"
                     >
                       Category
                     </th>
                     <th
                       scope="col"
-                      className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
+                      className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-300"
                     >
                       Description
                     </th>
 
-                    <th className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">
+                    <th className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-300">
                       Edit
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200 ">
+                <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
                   {jobs.map(job => (
                     <tr key={job._id}>
-                      <td className="px-4 py-4 text-sm text-gray-500  whitespace-nowrap">
-                        {jobs.title}
+                      <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-300">
+                        {job.title}
                       </td>
 
-                      <td className="px-4 py-4 text-sm text-gray-500  whitespace-nowrap">
+                      <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-300">
                         {format(new Date(job.deadline), 'P')}
                       </td>
 
-                      <td className="px-4 py-4 text-sm text-gray-500  whitespace-nowrap">
+                      <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-300">
                         ${job.min_price}-${job.max_price}
                       </td>
-                      <td className="px-4 py-4 text-sm whitespace-nowrap">
+                      <td className="px-4 py-4 text-sm whitespace-nowrap dark:text-gray-300">
                         <div className="flex items-center gap-x-2">
                           <p
-                            className={`px-3 py-1  ${
+                            className={`px-3 py-1 ${
                               job.category === 'Web Development' &&
-                              'text-blue-500 bg-blue-100/60'
+                              'text-blue-500 bg-blue-100/60 dark:bg-blue-800 dark:text-blue-300'
                             } ${
                               job.category === 'Graphics Design' &&
-                              'text-green-500 bg-green-100/60'
-                            }
-                            ${
+                              'text-green-500 bg-green-100/60 dark:bg-green-800 dark:text-green-300'
+                            } ${
                               job.category === 'Digital Marketing' &&
-                              'text-red-500 bg-red-100/60'
-                            } text-xs  rounded-full`}
+                              'text-red-500 bg-red-100/60 dark:bg-red-800 dark:text-red-300'
+                            } text-xs rounded-full`}
                           >
                             {job.category}
                           </p>
                         </div>
                       </td>
-                      <td className="px-4 py-4 text-sm text-gray-500  whitespace-nowrap">
-                        {job.description.substring(0, 30)}
-                        ......
+                      <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-gray-300">
+                        {job.description.substring(0, 30)}......
                       </td>
                       <td className="px-4 py-4 text-sm whitespace-nowrap">
                         <div className="flex items-center gap-x-6">
                           <button
                             onClick={() => handleDelete(job._id)}
-                            className="text-gray-500 transition-colors duration-200  hover:text-red-500 focus:outline-none"
+                            className="text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none dark:text-gray-300 dark:hover:text-red-400"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -188,7 +188,7 @@ const MyPostedJobs = () => {
 
                           <Link
                             to={`/update/${job._id}`}
-                            className="text-gray-500 transition-colors duration-200   hover:text-yellow-500 focus:outline-none"
+                            className="text-gray-500 transition-colors duration-200 hover:text-yellow-500 focus:outline-none dark:text-gray-300 dark:hover:text-yellow-400"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"

@@ -1,6 +1,7 @@
 import logo from '../assets/images/logo.png';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+
 const Footer = () => {
   const [feedback, setFeedback] = useState('');
 
@@ -14,7 +15,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gray-100 text-gray-700 mt-20">
+    <footer className="bg-gray-100 dark:bg-[#000000] text-gray-700 dark:text-gray-300 mt-20">
       <div className="container px-6 py-10 mx-auto">
         {/* Top Section */}
         <div className="grid gap-8 lg:grid-cols-4">
@@ -35,37 +36,40 @@ const Footer = () => {
             <h2 className="mb-4 text-lg font-semibold">Quick Links</h2>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="hover:text-purple-600">
+                <p className="hover:text-purple-600 dark:hover:text-purple-400">
                   Home
-                </a>
+                </p>
               </li>
               <li>
-                <a href="#" className="hover:text-purple-600">
+                <p className="hover:text-purple-600 dark:hover:text-purple-400">
                   About Us
-                </a>
+                </p>
               </li>
               <li>
-                <a href="#" className="hover:text-purple-600">
+                <p className="hover:text-purple-600 dark:hover:text-purple-400">
                   Services
-                </a>
+                </p>
               </li>
               <li>
-                <a href="#" className="hover:text-purple-600">
+                <p className="hover:text-purple-600 dark:hover:text-purple-400">
                   Contact
-                </a>
+                </p>
               </li>
               <li>
-                <a href="#" className="hover:text-purple-600">
+                <p className="hover:text-purple-600 dark:hover:text-purple-400">
                   FAQs
-                </a>
+                </p>
               </li>
               <li>
-                <a href="#" className="hover:text-purple-600">
+                <p className="hover:text-purple-600 dark:hover:text-purple-400">
                   Blog
-                </a>
+                </p>
               </li>
               <li>
-                <a href="#" className="hover:text-purple-600">
+                <a
+                  href="#"
+                  className="hover:text-purple-600 dark:hover:text-purple-400"
+                >
                   Careers
                 </a>
               </li>
@@ -87,7 +91,7 @@ const Footer = () => {
                 <strong>Email:</strong>
                 <a
                   href="mailto:support@solosphere.com"
-                  className="hover:text-purple-600"
+                  className="hover:text-purple-600 dark:hover:text-purple-400"
                 >
                   support@solosphere.com
                 </a>
@@ -97,9 +101,17 @@ const Footer = () => {
               </li>
               <li>
                 <strong>Social Media:</strong>
-                <p className="hover:text-purple-600">Facebook</p>,
-                <p className="hover:text-purple-600">Twitter</p>,
-                <p className="hover:text-purple-600">LinkedIn</p>
+                <p className="hover:text-purple-600 dark:hover:text-purple-400">
+                  Facebook
+                </p>
+                ,
+                <p className="hover:text-purple-600 dark:hover:text-purple-400">
+                  Twitter
+                </p>
+                ,
+                <p className="hover:text-purple-600 dark:hover:text-purple-400">
+                  LinkedIn
+                </p>
               </li>
             </ul>
           </div>
@@ -117,7 +129,7 @@ const Footer = () => {
                   rows="4"
                   value={feedback}
                   onChange={e => setFeedback(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-600"
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:focus:ring-purple-600"
                   placeholder="Let us know your thoughts..."
                 ></textarea>
               </div>
@@ -125,7 +137,7 @@ const Footer = () => {
               <button
                 onClick={handleFeedbackSubmit}
                 type="button"
-                className="px-4 py-2 text-white bg-gray-600 rounded-md hover:bg-gray-700"
+                className="px-4 py-2 text-white bg-gray-600 rounded-md hover:bg-gray-700 dark:bg-purple-600 dark:hover:bg-purple-700"
               >
                 Submit Feedback
               </button>
@@ -133,7 +145,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <hr className="my-8 border-gray-300" />
+        <hr className="my-8 border-gray-300 dark:border-gray-700" />
 
         {/* Bottom Section */}
         <div className="flex flex-col items-center justify-between space-y-4 lg:flex-row">
@@ -142,9 +154,15 @@ const Footer = () => {
             Empowering connections, one project at a time.
           </p>
           <div className="flex space-x-4">
-            <p className="hover:text-gray-600">Privacy Policy</p>
-            <p className="hover:text-gray-600"> Terms of Service</p>
-            <p className="hover:text-gray-600">Cookie Policy</p>
+            <p className="hover:text-gray-600 dark:hover:text-gray-400">
+              Privacy Policy
+            </p>
+            <p className="hover:text-gray-600 dark:hover:text-gray-400">
+              Terms of Service
+            </p>
+            <p className="hover:text-gray-600 dark:hover:text-gray-400">
+              Cookie Policy
+            </p>
           </div>
         </div>
       </div>

@@ -1,102 +1,171 @@
-import { useContext, useState, useEffect } from "react";
-import logo from "../assets/images/logo.png";
-import { AuthContext } from "../providers/AuthProvider";
-import { Link } from "react-router-dom";
+import { useContext, useState, useEffect } from 'react';
+import logo from '../assets/images/logo.png';
+import { AuthContext } from '../providers/AuthProvider';
+import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'light';
+  });
 
   useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
     } else {
-      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
     }
   }, [theme]);
 
-
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
   return (
-    <div className="navbar bg-base-100 shadow-sm container px-4 mx-auto">
-      <div className="flex-1">
-        <Link to="/" className="flex gap-2 items-center">
-          <img className="w-auto h-7" src={logo} alt="" />
-          <span className="font-extrabold text-xl">SoloSphere</span>
-        </Link>
-      </div>
+    <div>
+      <div className="navbar bg-base-100 dark:bg-gray-700 shadow-sm container px-4 mx-auto">
+        <div className="flex-1">
+          <NavLink to="/" className="flex gap-2 items-center">
+            <img
+              className="w-auto h-8  dark:bg-white"
+              src={logo}
+              alt="Logo"
+            />
+            <span className="font-extrabold text-xl dark:text-white">
+              SoloSphere
+            </span>
+          </NavLink>
+        </div>
 
-      <div className="flex-none">
-        <ul className="menu menu-horizontal px-1 font-bold">
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/jobs">All Jobs</Link>
-          </li>
-
-          {!user && (
+        <div className="flex-none">
+          <ul className="menu menu-horizontal px-1 font-bold dark:text-white">
             <li>
-              <Link to="/login">Login</Link>
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  `font-bold ${
+                    isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                  }`
+                }
+              >
+                Home
+              </NavLink>
             </li>
-          )}
-        </ul>
+            <li>
+              <NavLink
+                to="/jobs"
+                className={({ isActive }) =>
+                  `font-bold ${
+                    isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                  }`
+                }
+              >
+                All Jobs
+              </NavLink>
+            </li>
 
-        {user && (
-          <div className="dropdown dropdown-end z-50">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar"
-            >
-              <div title={user?.displayName} className="w-10 rounded-full">
-                <img
-                  referrerPolicy="no-referrer"
-                  alt="User Profile Photo"
-                  src={user?.photoURL}
-                />
-              </div>
-            </div>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 font-bold"
-            >
+            {!user && (
               <li>
-                <Link to="/add-job" className="justify-between">
-                  Add Job
-                </Link>
-              </li>
-              <li>
-                <Link to="/my-posted-jobs">My Posted Jobs</Link>
-              </li>
-              <li>
-                <Link to="/my-bids">My Bids</Link>
-              </li>
-              <li>
-                <Link to="/bid-requests">Bid Requests</Link>
-              </li>
-              <li className="mt-2">
-                <button
-                  onClick={logOut}
-                  className="bg-gray-200 block text-center"
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    `font-bold ${
+                      isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                    }`
+                  }
                 >
-                  Logout
-                </button>
+                  Login
+                </NavLink>
               </li>
-            </ul>
-          </div>
-        )}
+            )}
+          </ul>
 
-        {/* Theme Toggle Button */}
-        <button
-          onClick={toggleTheme}
-          className="ml-4 btn btn-outline btn-sm"
-        >
-          {theme === "light" ? "🌙 Dark" : "☀️ Light"}
-        </button>
+          {user && (
+            <div className="dropdown dropdown-end z-50">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <div title={user?.displayName} className="w-10 rounded-full">
+                  <img
+                    referrerPolicy="no-referrer"
+                    alt="User Profile Photo"
+                    src={user?.photoURL}
+                  />
+                </div>
+              </div>
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 dark:bg-gray-800 dark:text-white rounded-box w-52 font-bold"
+              >
+                <li>
+                  <NavLink
+                    to="/add-job"
+                    className={({ isActive }) =>
+                      `font-bold ${
+                        isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                      }`
+                    }
+                  >
+                    Add Job
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/my-posted-jobs"
+                    className={({ isActive }) =>
+                      `font-bold ${
+                        isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                      }`
+                    }
+                  >
+                    My Posted Jobs
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/my-bids"
+                    className={({ isActive }) =>
+                      `font-bold ${
+                        isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                      }`
+                    }
+                  >
+                    My Bids
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/bid-requests"
+                    className={({ isActive }) =>
+                      `font-bold ${
+                        isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                      }`
+                    }
+                  >
+                    Bid Requests
+                  </NavLink>
+                </li>
+                <li className="mt-2">
+                  <button
+                    onClick={logOut}
+                    className="bg-gray-200 block text-center dark:bg-gray-700"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
+
+          {/* Theme Toggle Button */}
+          <button onClick={toggleTheme} className="ml-4 btn btn-outline btn-sm">
+            {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+          </button>
+        </div>
       </div>
     </div>
   );

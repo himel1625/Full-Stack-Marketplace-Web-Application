@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 
 const Main = () => {
   return (
-    <div className="dark:bg-[#121212]">
+    <div className=" bg-gradient-to-b from-gray-50  dark:from-gray-900 dark:to-gray-800 to-gray-200">
       {/* Navbar */}
       <Navbar />
       {/* Outlet */}

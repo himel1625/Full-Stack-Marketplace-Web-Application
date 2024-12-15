@@ -29,7 +29,7 @@ const Navbar = () => {
         <div className="flex-1">
           <NavLink to="/" className="flex gap-2 items-center">
             <img className="w-auto h-8  dark:bg-white" src={logo} alt="Logo" />
-            <span className="font-extrabold text-xl dark:text-white">
+            <span className="font-extrabold text-xl bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 dark:from-blue-500 dark:via-teal-500 dark:to-green-500 bg-clip-text text-transparent">
               JobBidder
             </span>
           </NavLink>
@@ -158,7 +158,10 @@ const Navbar = () => {
           )}
 
           {/* Theme Toggle Button */}
-          <button onClick={toggleTheme} className=" dark:text-white ml-4 btn btn-outline btn-sm">
+          <button
+            onClick={toggleTheme}
+            className=" dark:text-white ml-4 btn btn-outline btn-sm"
+          >
             {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
           </button>
         </div>

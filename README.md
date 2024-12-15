@@ -83,3 +83,6 @@ The app uses modern technologies like React for the frontend, Node.js for the ba
 
 Check out the live demo of the project here: [Live Demo](#) _(coming soon)_
 
+## Screenshots:
+
+![Screenshot 1](/)

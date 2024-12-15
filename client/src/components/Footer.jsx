@@ -1,6 +1,18 @@
 import logo from '../assets/images/logo.png';
-
+import { useState } from 'react';
+import toast from 'react-hot-toast';
 const Footer = () => {
+  const [feedback, setFeedback] = useState('');
+
+  const handleFeedbackSubmit = () => {
+    if (feedback.trim()) {
+      setFeedback('');
+      toast.success('Thank you for your valuable feedback!');
+    } else {
+      toast.error('Please enter your feedback before submitting.');
+    }
+  };
+
   return (
     <footer className="bg-gray-100 text-gray-700 mt-20">
       <div className="container px-6 py-10 mx-auto">
@@ -72,7 +84,7 @@ const Footer = () => {
                 <strong>Phone:</strong> +1 (555) 123-4567
               </li>
               <li>
-                <strong>Email:</strong>{' '}
+                <strong>Email:</strong>
                 <a
                   href="mailto:support@solosphere.com"
                   className="hover:text-purple-600"
@@ -84,18 +96,10 @@ const Footer = () => {
                 <strong>Hours:</strong> Mon-Fri, 9:00 AM - 5:00 PM
               </li>
               <li>
-                <strong>Social Media:</strong>{' '}
-                <a href="#" className="hover:text-purple-600">
-                  Facebook
-                </a>
-                ,{' '}
-                <a href="#" className="hover:text-purple-600">
-                  Twitter
-                </a>
-                ,{' '}
-                <a href="#" className="hover:text-purple-600">
-                  LinkedIn
-                </a>
+                <strong>Social Media:</strong>
+                <p className="hover:text-purple-600">Facebook</p>,
+                <p className="hover:text-purple-600">Twitter</p>,
+                <p className="hover:text-purple-600">LinkedIn</p>
               </li>
             </ul>
           </div>
@@ -111,21 +115,24 @@ const Footer = () => {
                 <textarea
                   id="feedback"
                   rows="4"
+                  value={feedback}
+                  onChange={e => setFeedback(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-600"
                   placeholder="Let us know your thoughts..."
                 ></textarea>
               </div>
+
               <button
-                type="submit"
+                onClick={handleFeedbackSubmit}
+                type="button"
                 className="px-4 py-2 text-white bg-gray-600 rounded-md hover:bg-gray-700"
               >
-                Submit
+                Submit Feedback
               </button>
             </form>
           </div>
         </div>
 
-    
         <hr className="my-8 border-gray-300" />
 
         {/* Bottom Section */}

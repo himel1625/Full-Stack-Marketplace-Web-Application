@@ -13,6 +13,7 @@ import MyBids from '../pages/MyBids';
 import BidRequests from '../pages/BidRequests';
 import AllJobs from '../pages/AllJobs';
 import MyProfile from '../pages/MyProfile';
+import ForgotPassword from '../pages/ForgotPassword';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
             <BidRequests />
           </PrivateRoute>
         ),
+      },
+      {
+        path: '/ForgotPassword',
+        element: <ForgotPassword />,
       },
     ],
   },

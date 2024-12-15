@@ -25,15 +25,17 @@ const Navbar = () => {
 
   return (
     <div className="sticky top-0 z-10">
-      <div className="navbar bg-base-100 dark:bg-gray-800 shadow-sm px-8 mx-auto ">
+      <div className="navbar bg-base-100 dark:bg-gray-800 shadow-sm px-8 mx-auto">
         <div className="flex-1">
           <NavLink to="/" className="flex gap-2 items-center">
-            <img className="w-auto h-8  dark:bg-white" src={logo} alt="Logo" />
+            <img className="w-auto h-8 dark:bg-white" src={logo} alt="Logo" />
             <span className="font-extrabold text-xl bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 dark:from-blue-500 dark:via-teal-500 dark:to-green-500 bg-clip-text text-transparent">
               JobBidder
             </span>
           </NavLink>
         </div>
+
+        {/* User not logged in */}
         {!user && (
           <NavLink
             to="/login"
@@ -48,7 +50,7 @@ const Navbar = () => {
         )}
 
         <div className="flex-none">
-          <ul className="gap-6 px-1 font-bold dark:text-white hidden  md:flex">
+          <ul className="gap-6 px-1 font-bold dark:text-white hidden md:flex">
             <li>
               <NavLink
                 to="/"
@@ -59,18 +61,6 @@ const Navbar = () => {
                 }
               >
                 Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/MyProfile"
-                className={({ isActive }) =>
-                  `font-bold ${
-                    isActive ? 'text-blue-300' : 'hover:text-blue-600'
-                  }`
-                }
-              >
-                My Profile
               </NavLink>
             </li>
             <li>
@@ -86,55 +76,73 @@ const Navbar = () => {
               </NavLink>
             </li>
 
-            <li>
-              <NavLink
-                to="/add-job"
-                className={({ isActive }) =>
-                  `font-bold ${
-                    isActive ? 'text-blue-300' : 'hover:text-blue-600'
-                  }`
-                }
-              >
-                Add Job
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/my-posted-jobs"
-                className={({ isActive }) =>
-                  `font-bold ${
-                    isActive ? 'text-blue-300' : 'hover:text-blue-600'
-                  }`
-                }
-              >
-                My Posted Jobs
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/my-bids"
-                className={({ isActive }) =>
-                  `font-bold ${
-                    isActive ? 'text-blue-300' : 'hover:text-blue-600'
-                  }`
-                }
-              >
-                My Bids
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/bid-requests"
-                className={({ isActive }) =>
-                  `font-bold ${
-                    isActive ? 'text-blue-300' : 'hover:text-blue-600'
-                  }`
-                }
-              >
-                Bid Requests
-              </NavLink>
-            </li>
+        
+            {user && (
+              <>
+                <li>
+                  <NavLink
+                    to="/add-job"
+                    className={({ isActive }) =>
+                      `font-bold ${
+                        isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                      }`
+                    }
+                  >
+                    Add Job
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/my-posted-jobs"
+                    className={({ isActive }) =>
+                      `font-bold ${
+                        isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                      }`
+                    }
+                  >
+                    My Posted Jobs
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/my-bids"
+                    className={({ isActive }) =>
+                      `font-bold ${
+                        isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                      }`
+                    }
+                  >
+                    My Bids
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/bid-requests"
+                    className={({ isActive }) =>
+                      `font-bold ${
+                        isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                      }`
+                    }
+                  >
+                    Bid Requests
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/MyProfile"
+                    className={({ isActive }) =>
+                      `font-bold ${
+                        isActive ? 'text-blue-300' : 'hover:text-blue-600'
+                      }`
+                    }
+                  >
+                    My Profile
+                  </NavLink>
+                </li>
+              </>
+            )}
 
+         
             {!user && (
               <li>
                 <NavLink
@@ -151,6 +159,7 @@ const Navbar = () => {
             )}
           </ul>
 
+       
           {user && (
             <div className="dropdown dropdown-end z-50">
               <div
@@ -257,7 +266,7 @@ const Navbar = () => {
                 <li>
                   <button
                     onClick={toggleTheme}
-                    className=" mt-2 dark:text-white ml-4 btn btn-outline btn-sm md:hidden block"
+                    className="mt-2 dark:text-white ml-4 btn btn-outline btn-sm md:hidden block"
                   >
                     {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
                   </button>
@@ -277,7 +286,7 @@ const Navbar = () => {
           {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
-            className=" dark:text-white ml-4 btn btn-outline btn-sm hidden md:block"
+            className="dark:text-white ml-4 btn btn-outline btn-sm hidden md:block"
           >
             {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
           </button>

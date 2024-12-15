@@ -76,7 +76,6 @@ const Navbar = () => {
               </NavLink>
             </li>
 
-        
             {user && (
               <>
                 <li>
@@ -142,7 +141,6 @@ const Navbar = () => {
               </>
             )}
 
-         
             {!user && (
               <li>
                 <NavLink
@@ -159,7 +157,6 @@ const Navbar = () => {
             )}
           </ul>
 
-       
           {user && (
             <div className="dropdown dropdown-end z-50">
               <div

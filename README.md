@@ -140,3 +140,7 @@ Check out the live demo of the project here: [Live Demo](#) _(coming soon)_
 ## Screenshots:
 
 ![Screenshot 1](./client/public/Home.png)
+
+## **License**
+
+This project is licensed under the **Himel Mia**.

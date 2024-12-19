@@ -20,28 +20,27 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
+    // Jobs & Bids Db Collection
     const db = client.db('solo-db');
     const jobsCollection = db.collection('jobs');
     const bidsCollection = db.collection('bids');
-    // const jobsCollection = client.db('solo-db').collection('jobs');
-    // const bidsCollection = db.collection('solo-db').collection('bids');
+
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 });
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!',
     );
-    // save a jobData in db
+    // save a jobData in DB
     app.post('/add-job', async (req, res) => {
       const jobData = req.body;
       const result = await jobsCollection.insertOne(jobData);
       res.send(result);
     });
-    // get all jobs data from db
+    // get all jobs data from DB
     app.get('/jobs', async (req, res) => {
       const result = await jobsCollection.find().toArray();
       res.send(result);
     });
-
     // get all job posted by a specific user
     app.get('/jobs/:email', async (req, res) => {
       const email = req.params.email;
@@ -49,7 +48,7 @@ async function run() {
       const result = await jobsCollection.find(query).toArray();
       res.send(result);
     });
-    // get a single job data by id from db
+    // get a single job data by id from DB
     app.delete('/job/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
@@ -63,7 +62,7 @@ async function run() {
       const result = await jobsCollection.findOne(query);
       res.send(result);
     });
-    // save a jobData in db
+    // save a jobData in DB
     app.put('/update-job/:id', async (req, res) => {
       const id = req.params.id;
       const jobData = req.body;
@@ -75,7 +74,7 @@ async function run() {
       const result = await jobsCollection.updateOne(query, updated, options);
       res.send(result);
     });
-    //save a bid data
+    //save a bid data in DB
     app.post('/add-bid', async (req, res) => {
       const bidData = req.body;
       // 0. if a user placed a bid already in this job
@@ -92,11 +91,10 @@ async function run() {
           bid_count: 1,
         },
       };
-      // const updateBidCount =
       await jobsCollection.updateOne(filter, update);
       res.send(result);
-      
     });
+    
   } finally {
     // Ensures that the client will close when you finish/error
   }

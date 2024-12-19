@@ -123,8 +123,7 @@ of job bidding and hiring straightforward and efficient.
 - **Express.js**: A minimal and flexible Node.js web application framework used
   for building API routes.
 - **MongoDB**: A NoSQL database used to store job listings, bids, and user data.
-- **Mongoose**: A MongoDB object modeling tool for Node.js used to interact with
-  MongoDB in an easier and more structured way.
+
 
 ### **Other Tools:**
 

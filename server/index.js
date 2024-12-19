@@ -78,12 +78,25 @@ async function run() {
     //save a bid data
     app.post('/add-bid', async (req, res) => {
       const bidData = req.body;
+      // 0. if a user placed a bid already in this job
+      const query = { email: bidData.email, jobId: bidData.jobId };
+      const alreadyExist = await bidsCollection.findOne(query);
+      if (alreadyExist)
+        return res
+          .status(400)
+          .send('You have already placed a bid on this job!');
       const result = await bidsCollection.insertOne(bidData);
+      const filter = { _id: new ObjectId(bidData.jobId) };
+      const update = {
+        $inc: {
+          bid_count: 1,
+        },
+      };
+      // const updateBidCount =
+      await jobsCollection.updateOne(filter, update);
       res.send(result);
+      
     });
-
-
-
   } finally {
     // Ensures that the client will close when you finish/error
   }

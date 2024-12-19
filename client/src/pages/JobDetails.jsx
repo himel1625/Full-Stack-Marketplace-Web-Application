@@ -44,7 +44,6 @@ const JobDetails = () => {
     const email = user?.email;
     const comment = form.comment.value;
     const jobId = _id;
-    console.table({ price, email, comment, jobId });
 
     // 0. Check bid permissions validation
     if (user?.email === buyer?.email)
@@ -73,16 +72,16 @@ const JobDetails = () => {
       status: 'Pending',
       buyer: buyer?.email,
     };
+
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/add-bid`, bidData);
       e.target.reset();
       toast.success('bid posted successfully!');
-      // navigate('/my-bids');
+      navigate('/my-bids');
     } catch (err) {
       console.error(err);
-      toast.error('Error posting bid');
+      toast.error(err?.response?.data);
     }
-
   };
 
   return (
@@ -189,7 +188,7 @@ const JobDetails = () => {
 
             <div className='flex flex-col gap-2'>
               <label className='text-gray-700 dark:text-gray-300'>
-                Deadline
+               Offer  Deadline
               </label>
 
               {/* Date Picker Input Field */}

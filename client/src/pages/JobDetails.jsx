@@ -1,27 +1,31 @@
 import axios from 'axios';
-import { format } from 'date-fns';
+import { compareAsc, format } from 'date-fns';
 import { useEffect, useState } from 'react';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import useAuth from '../Hooks/useAuth';
 
+import 'react-datepicker/dist/react-datepicker.css';
+import { toast } from 'react-hot-toast';
 const JobDetails = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [startDate, setStartDate] = useState(new Date());
   const { id } = useParams();
-
   const [job, setJob] = useState({});
   useEffect(() => {
+    const fetchJobData = async () => {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_URL}/job/${id}`,
+      );
+      setJob(data);
+      setStartDate(new Date(data.deadline));
+    };
     fetchJobData();
   }, [id]);
 
-  const fetchJobData = async () => {
-    const { data } = await axios.get(
-      `${import.meta.env.VITE_API_URL}/job/${id}`
-    );
-    setJob(data);
-    setStartDate(new Date(data.deadline));
-  };
   const {
     title,
     deadline,
@@ -33,124 +37,174 @@ const JobDetails = () => {
     buyer,
   } = job || {};
 
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const form = e.target;
+    const price = form.price.value;
+    const email = user?.email;
+    const comment = form.comment.value;
+    const jobId = _id;
+    console.table({ price, email, comment, jobId });
+
+    // 0. Check bid permissions validation
+    if (user?.email === buyer?.email)
+      return toast.error('Action not permitted!');
+
+    // 1. Deadline crossed validation
+    if (compareAsc(new Date(), new Date(deadline)) === 1)
+      return toast.error('Deadline Crossed, Bidding Forbidden!');
+
+    // 2. Price within maximum price range validation
+    if (price > max_price)
+      return toast.error('Offer less or at least equal to maximum price!');
+
+    // 3. offered deadline is within sellers deadline validation
+    if (compareAsc(new Date(startDate), new Date(deadline)) === 1)
+      return toast.error('Offer a date within deadline');
+
+    const bidData = {
+      price,
+      email,
+      comment,
+      deadline: startDate,
+      jobId,
+      title,
+      category,
+      status: 'Pending',
+      buyer: buyer?.email,
+    };
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/add-bid`, bidData);
+      e.target.reset();
+      toast.success('bid posted successfully!');
+      // navigate('/my-bids');
+    } catch (err) {
+      console.error(err);
+      toast.error('Error posting bid');
+    }
+
+  };
+
   return (
-    <div className="flex flex-col md:flex-row justify-around gap-5 items-center min-h-[calc(100vh-306px)] md:max-w-screen-xl mx-auto">
+    <div className='flex flex-col md:flex-row justify-around gap-5 items-center min-h-[calc(100vh-306px)] md:max-w-screen-xl mx-auto'>
       {/* Job Details */}
-      <div className="flex-1 px-4 py-7 bg-white rounded-md shadow-md md:min-h-[350px] dark:bg-gray-800">
-        <div className="flex items-center justify-between">
+      <div className='flex-1 px-4 py-7 bg-white rounded-md shadow-md md:min-h-[350px] dark:bg-gray-800'>
+        <div className='flex items-center justify-between'>
           {deadline && (
-            <span className="text-sm font-light text-gray-800 dark:text-gray-300">
+            <span className='text-sm font-light text-gray-800 dark:text-gray-300'>
               Deadline: {format(new Date(deadline), 'P')}
             </span>
           )}
-          <span className="px-4 py-1 text-xs text-blue-800 uppercase bg-blue-200 rounded-full dark:text-blue-200 dark:bg-blue-800">
+          <span className='px-4 py-1 text-xs text-blue-800 uppercase bg-blue-200 rounded-full dark:text-blue-200 dark:bg-blue-800'>
             {category}
           </span>
         </div>
 
         <div>
-          <h1 className="mt-2 text-3xl font-semibold text-gray-800 dark:text-gray-100">
+          <h1 className='mt-2 text-3xl font-semibold text-gray-800 dark:text-gray-100'>
             {title}
           </h1>
 
-          <p className="mt-2 text-lg text-gray-600 dark:text-gray-300">
+          <p className='mt-2 text-lg text-gray-600 dark:text-gray-300'>
             {description}
           </p>
-          <p className="mt-6 text-sm font-bold text-gray-600 dark:text-gray-300">
+          <p className='mt-6 text-sm font-bold text-gray-600 dark:text-gray-300'>
             Buyer Details:
           </p>
-          <div className="flex items-center gap-5">
+          <div className='flex items-center gap-5'>
             <div>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+              <p className='mt-2 text-sm text-gray-600 dark:text-gray-300'>
                 Name: {buyer?.name}
               </p>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+              <p className='mt-2 text-sm text-gray-600 dark:text-gray-300'>
                 Email: {buyer?.email}
               </p>
             </div>
-            <div className="rounded-full object-cover overflow-hidden w-14 h-14">
-              <img src={buyer?.photo} alt="" />
+            <div className='rounded-full object-cover overflow-hidden w-14 h-14'>
+              <img src={buyer?.photo} alt='' />
             </div>
           </div>
-          <p className="mt-6 text-lg font-bold text-gray-600 dark:text-gray-300">
+          <p className='mt-6 text-lg font-bold text-gray-600 dark:text-gray-300'>
             Range: ${min_price} - ${max_price}
           </p>
         </div>
       </div>
 
       {/* Place A Bid Form */}
-      <section className="p-6 w-full bg-white rounded-md shadow-md flex-1 md:min-h-[350px] dark:bg-gray-800">
-        <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-100 capitalize">
+      <section className='p-6 w-full bg-white rounded-md shadow-md flex-1 md:min-h-[350px] dark:bg-gray-800'>
+        <h2 className='text-lg font-semibold text-gray-700 dark:text-gray-100 capitalize'>
           Place A Bid
         </h2>
 
-        <form>
-          <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+        <form onSubmit={handleSubmit}>
+          <div className='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'>
             <div>
               <label
-                className="text-gray-700 dark:text-gray-300"
-                htmlFor="price"
+                className='text-gray-700 dark:text-gray-300'
+                htmlFor='price'
               >
                 Price
               </label>
               <input
-                id="price"
-                type="text"
-                name="price"
+                id='price'
+                type='text'
+                name='price'
                 required
-                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600'
               />
             </div>
 
             <div>
               <label
-                className="text-gray-700 dark:text-gray-300"
-                htmlFor="emailAddress"
+                className='text-gray-700 dark:text-gray-300'
+                htmlFor='emailAddress'
               >
                 Email Address
               </label>
               <input
-                id="emailAddress"
-                type="email"
-                name="email"
+                id='emailAddress'
+                type='email'
+                name='email'
+                defaultValue={user && user?.email}
+                readOnly
                 disabled
-                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600'
               />
             </div>
 
             <div>
               <label
-                className="text-gray-700 dark:text-gray-300"
-                htmlFor="comment"
+                className='text-gray-700 dark:text-gray-300'
+                htmlFor='comment'
               >
                 Comment
               </label>
               <input
-                id="comment"
-                name="comment"
-                type="text"
-                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                id='comment'
+                name='comment'
+                type='text'
+                className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600'
               />
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label className="text-gray-700 dark:text-gray-300">
+            <div className='flex flex-col gap-2'>
+              <label className='text-gray-700 dark:text-gray-300'>
                 Deadline
               </label>
 
               {/* Date Picker Input Field */}
               <DatePicker
-                className="border p-2 rounded-md dark:bg-gray-700 dark:text-gray-100"
+                className='border p-2 rounded-md dark:bg-gray-700 dark:text-gray-100'
                 selected={startDate}
                 onChange={date => setStartDate(date)}
               />
             </div>
           </div>
 
-          <div className="flex justify-end mt-6">
+          <div className='flex justify-end mt-6'>
             <button
-              type="submit"
-              className="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 dark:bg-gray-600 dark:hover:bg-gray-500"
+              type='submit'
+              className='px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600 dark:bg-gray-600 dark:hover:bg-gray-500'
             >
               Place Bid
             </button>

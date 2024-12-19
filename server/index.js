@@ -20,11 +20,15 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    const jobsCollection = client.db('solo-db').collection('jobs');
+    const db = client.db('solo-db');
+    const jobsCollection = db.collection('jobs');
+    const bidsCollection = db.collection('bids');
+    // const jobsCollection = client.db('solo-db').collection('jobs');
+    // const bidsCollection = db.collection('solo-db').collection('bids');
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 });
     console.log(
-      'Pinged your deployment. You successfully connected to MongoDB!'
+      'Pinged your deployment. You successfully connected to MongoDB!',
     );
     // save a jobData in db
     app.post('/add-job', async (req, res) => {
@@ -41,16 +45,13 @@ async function run() {
     // get all job posted by a specific user
     app.get('/jobs/:email', async (req, res) => {
       const email = req.params.email;
-      console.log(email);
       const query = { 'buyer.email': email };
       const result = await jobsCollection.find(query).toArray();
       res.send(result);
     });
-
     // get a single job data by id from db
     app.delete('/job/:id', async (req, res) => {
       const id = req.params.id;
-      console.log(id);
       const query = { _id: new ObjectId(id) };
       const result = await jobsCollection.deleteOne(query);
       res.send(result);
@@ -72,10 +73,17 @@ async function run() {
       const query = { _id: new ObjectId(id) };
       const options = { upsert: true };
       const result = await jobsCollection.updateOne(query, updated, options);
-      console.log(result);
       res.send(result);
     });
-    
+    //save a bid data
+    app.post('/add-bid', async (req, res) => {
+      const bidData = req.body;
+      const result = await bidsCollection.insertOne(bidData);
+      res.send(result);
+    });
+
+
+
   } finally {
     // Ensures that the client will close when you finish/error
   }
@@ -83,7 +91,7 @@ async function run() {
 
 run().catch(console.dir);
 app.get('/', (req, res) => {
-  res.send('Hello from SoloSphere Server....');
+  res.send('Hello from JobBidder Server....');
 });
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

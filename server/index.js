@@ -5,8 +5,12 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const port = process.env.PORT || 4000;
 const app = express();
-
-app.use(cors());
+const corsOptions = {
+  origin: ['http://localhost:5173'],
+  credentials: true,
+  optionalSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.s9ap0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -29,11 +33,19 @@ async function run() {
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!',
     );
-
     // generate JWT
     app.post('/jwt', async (req, res) => {
-      const user = req.body;
-      jwt.sign()
+      const email = req.body;
+      const token = jwt.sign(email, process.env.SECRET_KEY, {
+        expiresIn: '1d',
+      });
+      res
+        .cookie('token', token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+        })
+        .send({ success: true });
     });
 
     // save a jobData in DB

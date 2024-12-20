@@ -2,7 +2,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-
+const jwt = require('jsonwebtoken');
 const port = process.env.PORT || 4000;
 const app = express();
 
@@ -29,6 +29,13 @@ async function run() {
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!',
     );
+
+    // generate JWT
+    app.post('/jwt', async (req, res) => {
+      const user = req.body;
+      jwt.sign()
+    });
+
     // save a jobData in DB
     app.post('/add-job', async (req, res) => {
       const jobData = req.body;
@@ -138,7 +145,6 @@ async function run() {
       const result = await jobsCollection.find(query, option).toArray();
       res.send(result);
     });
-    
   } finally {
     // Ensures that the client will close when you finish/error
   }

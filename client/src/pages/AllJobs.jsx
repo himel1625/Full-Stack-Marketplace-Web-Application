@@ -84,12 +84,12 @@ const AllJobs = () => {
             Reset
           </button>
         </div>
-
         <div className='grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
           {jobs.map(job => (
             <JobCard job={job} key={job._id} />
           ))}
         </div>
+  
       </div>
     </div>
   );

@@ -1,34 +1,32 @@
 import axios from 'axios';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import useAuth from '../Hooks/useAuth';
 const BidRequests = () => {
   const { user } = useAuth();
   const [bids, setBids] = useState([]);
 
   useEffect(() => {
-    const fetchAllJobs = async () => {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/bids/${user?.email}?buyer=true`,
-      );
-      setBids(data);
-    };
     fetchAllJobs();
   }, [bids]);
-
+  const fetchAllJobs = async () => {
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_API_URL}/bids/${user?.email}?buyer=true`,
+    );
+    setBids(data);
+  };
   const handleStatusChange = async (id, prevStatus, status) => {
-    // if (prevStatus === status || prevStatus === 'Completed')
-    //   return console.log('not aloud');
     try {
-      const { data } = await axios.patch(
+      await axios.patch(
         ` ${import.meta.env.VITE_API_URL}/bid-status-update/${id}`,
         { status },
       );
-      console.log(data);
-
-      // await fetchAllJobs();
+      await fetchAllJobs();
+      toast.success(`status Changed to ${status}`);
     } catch (err) {
       console.log(err);
+      toast.error(err.massage);
     }
   };
 
@@ -183,7 +181,8 @@ const BidRequests = () => {
                             {/* Reject Button */}
                             <button
                               disabled={
-                                status === 'Rejected' || status === 'Completed'
+                                bid.status === 'Rejected' ||
+                                bid.status === 'Completed'
                               }
                               onClick={() =>
                                 handleStatusChange(

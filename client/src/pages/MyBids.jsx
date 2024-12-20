@@ -7,22 +7,21 @@ const MyBids = () => {
 
   const [bids, setBids] = useState([]);
   useEffect(() => {
-    const fetchAllJobs = async () => {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/bids/${user?.email}`,
-      );
-      setBids(data);
-    };
     fetchAllJobs();
   }, [user?.email]);
+  const fetchAllJobs = async () => {
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_API_URL}/bids/${user?.email}`,
+    );
+    setBids(data);
+  };
   const handleStatusChange = async (id, prevStatus, status) => {
-    // if (prevStatus !== 'In Progress') return console.log('not allowed');
-
     try {
       const { data } = await axios.patch(
         ` ${import.meta.env.VITE_API_URL}/bid-status-update/${id}`,
         { status },
       );
+      await fetchAllJobs();
       console.log(data);
 
       // await fetchAllJobs();
@@ -166,7 +165,7 @@ const MyBids = () => {
                                 'Completed',
                               )
                             }
-                            disabled={bid.status === 'In Progress'}
+                            disabled={bid.status !== 'In Progress'}
                             title='Mark Complete'
                             className='text-gray-500 transition-colors duration-200 hover:text-red-500 focus:outline-none disabled:hover:cursor-not-allowed dark:text-gray-300 dark:hover:text-red-400'
                           >

@@ -110,7 +110,6 @@ async function run() {
       const result = await bidsCollection.find(query).toArray();
       res.send(result);
     });
-
     // update bid status
     app.patch('/bid-status-update/:id', async (req, res) => {
       const id = req.params.id;
@@ -122,6 +121,9 @@ async function run() {
       const result = await bidsCollection.updateOne(filter, update);
       res.send(result);
     });
+
+    
+
   } finally {
     // Ensures that the client will close when you finish/error
   }

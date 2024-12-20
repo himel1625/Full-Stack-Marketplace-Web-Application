@@ -124,6 +124,10 @@ async function run() {
     app.get('/all-jobs', async (req, res) => {
       const filter = req.query.filter;
       const search = req.query.search;
+      const sort = req.query.sort;
+      let option = {};
+      if (sort) option = { sort: { deadline: sort === 'asc' ? 1 : -1 } };
+
       let query = {
         title: {
           $regex: search,
@@ -131,7 +135,7 @@ async function run() {
         },
       };
       if (filter) query.category = filter;
-      const result = await jobsCollection.find(query).toArray();
+      const result = await jobsCollection.find(query, option).toArray();
       res.send(result);
     });
   } finally {

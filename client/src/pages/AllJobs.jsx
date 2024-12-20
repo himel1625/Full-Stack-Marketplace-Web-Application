@@ -20,6 +20,11 @@ const AllJobs = () => {
     };
     fetchAllJobs();
   }, [filter, search, sort]);
+  const handelReset = () => {
+    setFilter('');
+    setSearch('');
+    setSort('');
+  };
 
   return (
     <div className='container px-6 py-10 mx-auto min-h-[calc(100vh-306px)] flex flex-col justify-between'>
@@ -31,6 +36,7 @@ const AllJobs = () => {
               id='category'
               className='border p-4 rounded-lg dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600'
               onChange={e => setFilter(e.target.value)}
+              value={filter}
             >
               <option value=''>Filter By Category</option>
               <option value='Web Development'>Web Development</option>
@@ -48,6 +54,7 @@ const AllJobs = () => {
                 placeholder='Enter Job Title'
                 aria-label='Enter Job Title'
                 onBlur={e => setSearch(e.target.value)}
+                value={search}
               />
 
               <button className='px-1 md:px-4 py-3 text-sm font-medium tracking-wider text-gray-100 uppercase transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:bg-gray-600 focus:outline-none dark:bg-gray-600 dark:hover:bg-gray-500 dark:focus:bg-gray-500'>
@@ -62,6 +69,7 @@ const AllJobs = () => {
               id='category'
               className='border p-4 rounded-md dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600'
               onChange={e => setSort(e.target.value)}
+              value={sort}
             >
               <option value=''>Sort By Deadline</option>
               <option value='dsc'>Descending Order</option>
@@ -69,7 +77,10 @@ const AllJobs = () => {
             </select>
           </div>
 
-          <button className='btn dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600'>
+          <button
+            onClick={handelReset}
+            className='btn dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600'
+          >
             Reset
           </button>
         </div>

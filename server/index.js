@@ -138,6 +138,7 @@ async function run() {
       const result = await jobsCollection.find(query, option).toArray();
       res.send(result);
     });
+    
   } finally {
     // Ensures that the client will close when you finish/error
   }

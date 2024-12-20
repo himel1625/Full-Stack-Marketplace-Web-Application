@@ -24,7 +24,6 @@ async function run() {
     const db = client.db('solo-db');
     const jobsCollection = db.collection('jobs');
     const bidsCollection = db.collection('bids');
-
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 });
     console.log(
@@ -121,9 +120,14 @@ async function run() {
       const result = await bidsCollection.updateOne(filter, update);
       res.send(result);
     });
-
-    
-
+    // get all jobs
+    app.get('/all-jobs', async (req, res) => {
+      const filter = req.query.filter;
+      let query = {};
+      if (filter) query.category = filter;
+      const result = await jobsCollection.find(query).toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
   }

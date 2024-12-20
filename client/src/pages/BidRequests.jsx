@@ -6,16 +6,17 @@ import useAuth from '../Hooks/useAuth';
 const BidRequests = () => {
   const { user } = useAuth();
   const [bids, setBids] = useState([]);
-
   useEffect(() => {
     fetchAllJobs();
   }, [bids]);
+
   const fetchAllJobs = async () => {
     const { data } = await axios.get(
       `${import.meta.env.VITE_API_URL}/bids/${user?.email}?buyer=true`,
     );
     setBids(data);
   };
+  
   const handleStatusChange = async (id, prevStatus, status) => {
     try {
       await axios.patch(

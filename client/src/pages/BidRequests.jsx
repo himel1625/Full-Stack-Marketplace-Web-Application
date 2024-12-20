@@ -182,9 +182,9 @@ const BidRequests = () => {
 
                             {/* Reject Button */}
                             <button
-                              // disabled={
-                              //   status === 'Rejected' || status === 'Completed'
-                              // }
+                              disabled={
+                                status === 'Rejected' || status === 'Completed'
+                              }
                               onClick={() =>
                                 handleStatusChange(
                                   bid._id,

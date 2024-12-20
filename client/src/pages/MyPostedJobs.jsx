@@ -1,19 +1,18 @@
-import axios from 'axios';
 import { format } from 'date-fns';
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import useAxiosSecure from '../Hooks/useAxiosSecure';
 import { AuthContext } from '../providers/AuthProvider';
 
 const MyPostedJobs = () => {
   const { user } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure();
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
     const fetchAllJobs = async () => {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/jobs/${user?.email}`,
-      );
+      const { data } = await axiosSecure.get(`/jobs/${user?.email}`);
       setJobs(data);
     };
     fetchAllJobs();
@@ -41,7 +40,7 @@ const MyPostedJobs = () => {
       .then(async result => {
         if (result.isConfirmed) {
           try {
-            await axios.delete(`${import.meta.env.VITE_API_URL}/job/${_id}`);
+            await axiosSecure.delete(`/job/${_id}`);
             setJobs(prevJobs => prevJobs.filter(job => job._id !== _id));
             swalWithBootstrapButtons.fire({
               title: 'Deleted!',

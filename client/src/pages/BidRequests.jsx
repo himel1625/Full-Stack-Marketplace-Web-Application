@@ -3,7 +3,10 @@ import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import useAuth from '../Hooks/useAuth';
+import useAxiosSecure from '../Hooks/useAxiosSecure';
+
 const BidRequests = () => {
+  const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const [bids, setBids] = useState([]);
   useEffect(() => {
@@ -11,10 +14,9 @@ const BidRequests = () => {
   }, [bids]);
 
   const fetchAllJobs = async () => {
-    const { data } = await axios.get(
-      `${import.meta.env.VITE_API_URL}/bids/${user?.email}?buyer=true`,
-      { withCredentials: true },
-    );
+    const { data } = await axiosSecure.get(`/bids/${user?.email}?buyer=true`, {
+      withCredentials: true,
+    });
     setBids(data);
   };
 

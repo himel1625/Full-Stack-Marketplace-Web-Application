@@ -2,17 +2,16 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import useAuth from '../Hooks/useAuth';
+import useAxiosSecure from '../Hooks/useAxiosSecure';
 const MyBids = () => {
   const { user } = useAuth();
-
+  const axiosSecure = useAxiosSecure();
   const [bids, setBids] = useState([]);
   useEffect(() => {
     fetchAllJobs();
   }, [user?.email]);
   const fetchAllJobs = async () => {
-    const { data } = await axios.get(
-      `${import.meta.env.VITE_API_URL}/bids/${user?.email}`,
-    );
+    const { data } = await axiosSecure.get(`/bids/${user?.email}`);
     setBids(data);
   };
   const handleStatusChange = async (id, prevStatus, status) => {

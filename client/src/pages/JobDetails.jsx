@@ -9,8 +9,10 @@ import useAuth from '../Hooks/useAuth';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import { toast } from 'react-hot-toast';
+import useAxiosSecure from '../Hooks/useAxiosSecure';
 const JobDetails = () => {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState(new Date());
@@ -19,12 +21,9 @@ const JobDetails = () => {
 
   useEffect(() => {
     const fetchJobData = async () => {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/job/${id}`,
-      );
+      const { data } = await axiosSecure.get(`/job/${id}`);
       setJob(data);
       console.log(data);
-
       setStartDate(new Date(data.deadline));
     };
     fetchJobData();

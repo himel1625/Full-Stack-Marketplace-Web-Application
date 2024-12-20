@@ -6,16 +6,19 @@ import JobCard from '../components/JobCard';
 const AllJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [filter, setFilter] = useState('');
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const fetchAllJobs = async () => {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/all-jobs?filter=${filter}`,
+        `${
+          import.meta.env.VITE_API_URL
+        }/all-jobs?filter=${filter}&search=${search}`,
       );
       setJobs(data);
     };
     fetchAllJobs();
-  }, [filter]);
+  }, [filter, search]);
 
   return (
     <div className='container px-6 py-10 mx-auto min-h-[calc(100vh-306px)] flex flex-col justify-between'>
@@ -43,6 +46,7 @@ const AllJobs = () => {
                 name='search'
                 placeholder='Enter Job Title'
                 aria-label='Enter Job Title'
+                onBlur={e => setSearch(e.target.value)}
               />
 
               <button className='px-1 md:px-4 py-3 text-sm font-medium tracking-wider text-gray-100 uppercase transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:bg-gray-600 focus:outline-none dark:bg-gray-600 dark:hover:bg-gray-500 dark:focus:bg-gray-500'>

@@ -120,10 +120,16 @@ async function run() {
       const result = await bidsCollection.updateOne(filter, update);
       res.send(result);
     });
-    // get all jobs
+    // get all jobs (filter/search/sort/reset)
     app.get('/all-jobs', async (req, res) => {
       const filter = req.query.filter;
-      let query = {};
+      const search = req.query.search;
+      let query = {
+        title: {
+          $regex: search,
+          $options: 'i',
+        },
+      };
       if (filter) query.category = filter;
       const result = await jobsCollection.find(query).toArray();
       res.send(result);

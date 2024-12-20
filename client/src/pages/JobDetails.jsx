@@ -11,17 +11,20 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { toast } from 'react-hot-toast';
 const JobDetails = () => {
   const { user } = useAuth();
-  
+
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState(new Date());
   const { id } = useParams();
   const [job, setJob] = useState({});
+
   useEffect(() => {
     const fetchJobData = async () => {
       const { data } = await axios.get(
         `${import.meta.env.VITE_API_URL}/job/${id}`,
       );
       setJob(data);
+      console.log(data);
+
       setStartDate(new Date(data.deadline));
     };
     fetchJobData();
@@ -189,7 +192,7 @@ const JobDetails = () => {
 
             <div className='flex flex-col gap-2'>
               <label className='text-gray-700 dark:text-gray-300'>
-               Offer  Deadline
+                Offer Deadline
               </label>
 
               {/* Date Picker Input Field */}

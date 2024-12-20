@@ -33,15 +33,26 @@ async function run() {
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!',
     );
-    // generate JWT
+    // generate jwt
     app.post('/jwt', async (req, res) => {
       const email = req.body;
+      // create token
       const token = jwt.sign(email, process.env.SECRET_KEY, {
         expiresIn: '1d',
       });
       res
         .cookie('token', token, {
           httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+        })
+        .send({ success: true });
+    });
+    // logout || clear cookie from browser
+    app.get('/logout', async (req, res) => {
+      res
+        .clearCookie('token', {
+          maxAge: 0,
           secure: process.env.NODE_ENV === 'production',
           sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
         })

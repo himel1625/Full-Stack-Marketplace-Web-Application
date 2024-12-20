@@ -11,6 +11,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { toast } from 'react-hot-toast';
 const JobDetails = () => {
   const { user } = useAuth();
+  
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState(new Date());
   const { id } = useParams();

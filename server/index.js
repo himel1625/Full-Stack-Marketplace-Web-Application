@@ -94,7 +94,34 @@ async function run() {
       await jobsCollection.updateOne(filter, update);
       res.send(result);
     });
-    
+    // get all bids for a specific user
+    app.get('/bids/:email', async (req, res) => {
+      const email = req.params.email;
+      const isBuyer = req.query.buyer;
+      // const decodedEmail = req.user?.email;
+      // if (decodedEmail !== email)
+      //   return res.status(401).send({ message: 'unauthorized access' });
+      let query = {};
+      if (isBuyer) {
+        query.buyer = email;
+      } else {
+        query.email = email;
+      }
+      const result = await bidsCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    // update bid status
+    app.patch('/bid-status-update/:id', async (req, res) => {
+      const id = req.params.id;
+      const { status } = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const update = {
+        $set: { status },
+      };
+      const result = await bidsCollection.updateOne(filter, update);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
   }

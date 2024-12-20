@@ -5,6 +5,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const port = process.env.PORT || 4000;
 const app = express();
+const cookieParser = require('cookie-parser');
 const corsOptions = {
   origin: ['http://localhost:5173'],
   credentials: true,
@@ -12,6 +13,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.s9ap0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 const client = new MongoClient(uri, {
@@ -33,6 +35,19 @@ async function run() {
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!',
     );
+    //verifyToken token
+    const verifyToken = (req, res, next) => {
+      const token = req.cookies?.token;
+      if (!token)
+        return res.status(401).send({ message: 'unauthorized access' });
+      jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+          return res.status(401).send({ message: 'unauthorized access' });
+        }
+        req.user = decoded;
+      });
+      next();
+    };
     // generate jwt
     app.post('/jwt', async (req, res) => {
       const email = req.body;
@@ -58,7 +73,6 @@ async function run() {
         })
         .send({ success: true });
     });
-
     // save a jobData in DB
     app.post('/add-job', async (req, res) => {
       const jobData = req.body;
@@ -71,9 +85,12 @@ async function run() {
       res.send(result);
     });
     // get all job posted by a specific user
-    app.get('/jobs/:email', async (req, res) => {
+    app.get('/jobs/:email', verifyToken, async (req, res) => {
       const email = req.params.email;
       const query = { 'buyer.email': email };
+      const decodedEmail = req.user?.email;
+      if (decodedEmail !== email)
+        return res.status(401).send({ message: 'unauthorized access' });
       const result = await jobsCollection.find(query).toArray();
       res.send(result);
     });
@@ -124,12 +141,12 @@ async function run() {
       res.send(result);
     });
     // get all bids for a specific user
-    app.get('/bids/:email', async (req, res) => {
+    app.get('/bids/:email', verifyToken, async (req, res) => {
       const email = req.params.email;
       const isBuyer = req.query.buyer;
-      // const decodedEmail = req.user?.email;
-      // if (decodedEmail !== email)
-      //   return res.status(401).send({ message: 'unauthorized access' });
+      const decodedEmail = req.user?.email;
+      if (decodedEmail !== email)
+        return res.status(401).send({ message: 'unauthorized access' });
       let query = {};
       if (isBuyer) {
         query.buyer = email;

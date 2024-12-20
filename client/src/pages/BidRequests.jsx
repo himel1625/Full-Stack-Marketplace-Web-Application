@@ -13,14 +13,16 @@ const BidRequests = () => {
   const fetchAllJobs = async () => {
     const { data } = await axios.get(
       `${import.meta.env.VITE_API_URL}/bids/${user?.email}?buyer=true`,
+      { withCredentials: true },
     );
     setBids(data);
   };
-  
+
   const handleStatusChange = async (id, prevStatus, status) => {
     try {
       await axios.patch(
         ` ${import.meta.env.VITE_API_URL}/bid-status-update/${id}`,
+
         { status },
       );
       await fetchAllJobs();

@@ -1,49 +1,48 @@
-import { Link, useNavigate } from 'react-router-dom'
-import bgImg from '../../assets/images/register.jpg'
-import logo from '../../assets/images/logo.png'
-import { useContext } from 'react'
-import { AuthContext } from '../../providers/AuthProvider'
-import toast from 'react-hot-toast'
+import toast from 'react-hot-toast';
+import { Link, useNavigate } from 'react-router-dom';
+import logo from '../../assets/images/logo.png';
+import bgImg from '../../assets/images/register.jpg';
+import useAuth from '../../Hooks/useAuth';
 
 const Registration = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { signInWithGoogle, createUser, updateUserProfile, setUser } =
-    useContext(AuthContext)
+    useAuth();
 
   const handleSignUp = async e => {
-    e.preventDefault()
-    const form = e.target
-    const email = form.email.value
-    const name = form.name.value
-    const photo = form.photo.value
-    const pass = form.password.value
-    console.log({ email, pass, name, photo })
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const name = form.name.value;
+    const photo = form.photo.value;
+    const pass = form.password.value;
+    console.log({ email, pass, name, photo });
     try {
       //2. User Registration
-      const result = await createUser(email, pass)
-      console.log(result)
-      await updateUserProfile(name, photo)
-      setUser({ ...result.user, photoURL: photo, displayName: name })
-      toast.success('Signup Successful')
-      navigate('/')
+      const result = await createUser(email, pass);
+      console.log(result);
+      await updateUserProfile(name, photo);
+      setUser({ ...result.user, photoURL: photo, displayName: name });
+      toast.success('Signup Successful');
+      navigate('/');
     } catch (err) {
-      console.log(err)
-      toast.error(err?.message)
+      console.log(err);
+      toast.error(err?.message);
     }
-  }
+  };
 
   // Google Signin
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithGoogle()
+      await signInWithGoogle();
 
-      toast.success('Signin Successful')
-      navigate('/')
+      toast.success('Signin Successful');
+      navigate('/');
     } catch (err) {
-      console.log(err)
-      toast.error(err?.message)
+      console.log(err);
+      toast.error(err?.message);
     }
-  }
+  };
 
   return (
     <div className='flex justify-center items-center min-h-[calc(100vh-306px)] my-12'>
@@ -192,7 +191,7 @@ const Registration = () => {
         ></div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Registration
+export default Registration;

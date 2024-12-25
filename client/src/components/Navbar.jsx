@@ -40,7 +40,7 @@ const Navbar = () => {
           <NavLink
             to='/login'
             className={({ isActive }) =>
-              `font-bold text-white lg:hidden ${
+              `font-bold  lg:hidden  dark:text-white  text-black${
                 isActive ? 'text-blue-300' : 'hover:text-blue-600'
               }`
             }
@@ -146,7 +146,7 @@ const Navbar = () => {
                 <NavLink
                   to='/login'
                   className={({ isActive }) =>
-                    `font-bold ${
+                    `font-bold dark:text-white  text-black ${
                       isActive ? 'text-blue-300' : 'hover:text-blue-600'
                     }`
                   }

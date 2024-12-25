@@ -9,13 +9,13 @@ const TabCategories = () => {
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
+    const fetchAllJobs = async () => {
+      const { data } = await axiosSecure.get(`/jobs`);
+      setJobs(data);
+    };
+
     fetchAllJobs();
   }, []);
-
-  const fetchAllJobs = async () => {
-    const { data } = await axiosSecure.get(`/jobs`);
-    setJobs(data);
-  };
 
   return (
     <Tabs>

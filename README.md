@@ -124,7 +124,6 @@ of job bidding and hiring straightforward and efficient.
   for building API routes.
 - **MongoDB**: A NoSQL database used to store job listings, bids, and user data.
 
-
 ### **Other Tools:**
 
 - **Environment Variables**: Securely manage sensitive data such as Firebase
@@ -134,12 +133,13 @@ of job bidding and hiring straightforward and efficient.
 
 ## Live Demo
 
-Check out the live demo of the project here: [Live Demo](#) _(coming soon)_
+Check out the live demo of the project here:
+[Live Link](https://solosphere-9150a.web.app/)
 
 ## **License**
+
 This project is licensed under the **Himel Mia**.
 
 ## Screenshots:
 
 ![Screenshot 1](./client/public/Home.png)
-

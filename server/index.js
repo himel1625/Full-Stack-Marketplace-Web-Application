@@ -7,7 +7,11 @@ const port = process.env.PORT || 4000;
 const app = express();
 const cookieParser = require('cookie-parser');
 const corsOptions = {
-  origin: ['http://localhost:5173'],
+  origin: [
+    'http://localhost:5175',
+    'https://solosphere-9150a.web.app',
+    'https://solosphere-9150a.firebaseapp.com',
+  ],
   credentials: true,
   optionalSuccessStatus: 200,
 };
@@ -95,21 +99,21 @@ async function run() {
       res.send(result);
     });
     // get a single job data by id from DB
-    app.delete('/job/:id', async (req, res) => {
+    app.delete('/job/:id', verifyToken, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await jobsCollection.deleteOne(query);
       res.send(result);
     });
     // get a single job data by id from db
-    app.get('/job/:id', async (req, res) => {
+    app.get('/job/:id', verifyToken, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await jobsCollection.findOne(query);
       res.send(result);
     });
     // save a jobData in DB
-    app.put('/update-job/:id', async (req, res) => {
+    app.put('/update-job/:id', verifyToken, async (req, res) => {
       const id = req.params.id;
       const jobData = req.body;
       const updated = {
@@ -156,8 +160,9 @@ async function run() {
       const result = await bidsCollection.find(query).toArray();
       res.send(result);
     });
+
     // update bid status
-    app.patch('/bid-status-update/:id', async (req, res) => {
+    app.patch('/bid-status-update/:id', verifyToken, async (req, res) => {
       const id = req.params.id;
       const { status } = req.body;
       const filter = { _id: new ObjectId(id) };
@@ -171,10 +176,11 @@ async function run() {
     app.get('/all-jobs', async (req, res) => {
       const filter = req.query.filter;
       const search = req.query.search;
+      const page = parseInt(req.query.page);
+      const size = parseInt(req.query.size);
       const sort = req.query.sort;
       let option = {};
       if (sort) option = { sort: { deadline: sort === 'asc' ? 1 : -1 } };
-
       let query = {
         title: {
           $regex: search,
@@ -182,7 +188,11 @@ async function run() {
         },
       };
       if (filter) query.category = filter;
-      const result = await jobsCollection.find(query, option).toArray();
+      const result = await jobsCollection
+        .find(query, option)
+        .skip(page * size)
+        .limit(size)
+        .toArray();
       res.send(result);
     });
   } finally {

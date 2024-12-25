@@ -6,7 +6,7 @@ import useAuth from '../../Hooks/useAuth';
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location?.state || '/';
+  const fromHome = location?.state || '/';
   const { signIn, signInWithGoogle } = useAuth();
 
   // Google Signin
@@ -14,7 +14,7 @@ const Login = () => {
     try {
       await signInWithGoogle();
       toast.success('Signin Successful');
-      navigate(from, { replace: true });
+      navigate(fromHome, { replace: true });
     } catch (err) {
       console.log(err);
       toast.error(err?.message);
@@ -32,7 +32,7 @@ const Login = () => {
       //User Login
       await signIn(email, pass);
       toast.success('Signin Successful');
-      navigate(from, { replace: true });
+      navigate(fromHome, { replace: true });
     } catch (err) {
       console.log(err);
       toast.error(err?.message);

@@ -8,22 +8,36 @@ const AllJobs = () => {
   const [filter, setFilter] = useState('');
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('');
-
+  const [cuuPage, setCuuPage] = useState(0);
+  const itemPerPage = 8;
   useEffect(() => {
     const fetchAllJobs = async () => {
       const { data } = await axios.get(
         `${
           import.meta.env.VITE_API_URL
-        }/all-jobs?filter=${filter}&search=${search}&sort=${sort}`,
+        }/all-jobs?filter=${filter}&search=${search}&sort=${sort}&page=${cuuPage}&size=${itemPerPage}`,
       );
       setJobs(data);
     };
     fetchAllJobs();
-  }, [filter, search, sort]);
+  }, [filter, search, sort, itemPerPage, cuuPage]);
   const handelReset = () => {
     setFilter('');
     setSearch('');
     setSort('');
+  };
+
+  const handlePrev = () => {
+    if (cuuPage > 0) {
+      setCuuPage(cuuPage - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (jobs.length === 0) {
+      return;
+    }
+    setCuuPage(cuuPage + 1);
   };
 
   return (
@@ -84,12 +98,35 @@ const AllJobs = () => {
             Reset
           </button>
         </div>
-        <div className='grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-          {jobs.map(job => (
-            <JobCard job={job} key={job._id} />
-          ))}
+        <div className='grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 '>
+          {jobs.length > 0 ? (
+            jobs.map(job => <JobCard job={job} key={job._id} />)
+          ) : (
+            <div className='col-span-4 text-center text-xl text-red-500'>
+              No foods available for this page
+            </div>
+          )}
         </div>
-  
+        {/* Pagination */}
+        <div className='flex justify-center items-center mt-8 space-x-4'>
+          <button
+            onClick={handlePrev}
+            className='px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed'
+            disabled={cuuPage === 0}
+          >
+            Prev
+          </button>
+          <span className='text-lg font-bold text-blue-500 '>
+            Page {cuuPage + 1}
+          </span>
+          <button
+            onClick={handleNext}
+            className='px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed'
+            disabled={jobs.length === 0}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

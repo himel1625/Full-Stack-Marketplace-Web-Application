@@ -21,7 +21,7 @@ const useAxiosSecure = () => {
           'error caught from our very own axios interceptor-->',
           error.response,
         );
-        if (error.response.status === 401 || error.response.status === 403) {
+        if (error.response?.status === 401 || error.response?.status === 403) {
           // logout
           logOut();
           // navigate to login

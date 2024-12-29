@@ -8,7 +8,7 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const corsOptions = {
   origin: [
-    'http://localhost:5175',
+    'http://localhost:5173',
     'https://solosphere-9150a.web.app',
     'https://solosphere-9150a.firebaseapp.com',
   ],
@@ -35,10 +35,10 @@ async function run() {
     const jobsCollection = db.collection('jobs');
     const bidsCollection = db.collection('bids');
     // Send a ping to confirm a successful connection
-    await client.db('admin').command({ ping: 1 });
-    console.log(
-      'Pinged your deployment. You successfully connected to MongoDB!',
-    );
+    // await client.db('admin').command({ ping: 1 });
+    // console.log(
+    //   'Pinged your deployment. You successfully connected to MongoDB!',
+    // );
     //verifyToken token
     const verifyToken = (req, res, next) => {
       const token = req.cookies?.token;
